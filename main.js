@@ -1,7 +1,10 @@
-
-  var cards=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-  var colors =['heart','spade','diamond','club'];
-
+  // const for card , colors
+  const cards=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+  const colors =['heart','spade','diamond','club'];  // ** color  used to store suit of card
+  
+  /**
+  to convert the card number array card objects for attribute color and card value 
+  */
   function findCard(number){
     var cardIndex = number % 13;
     var colorsIndex = (number - cardIndex)/ 13 ;
@@ -11,25 +14,31 @@
     // });
 
     return {
-    'color':colors[colorsIndex],
+    'color':colors[colorsIndex],  // ** color key used to store suit of card
     'card':cards[cardIndex],
     };
   }
+  
+  //  constants for card rank , color rank 
+  const rank = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+  const colorrank = ['club','diamond','heart','spade'];
+  // strings for detecting sequence
+  const sequenceStr = 'A2345678910JQKA';
+  const revSequenceStr = 'AKQJ1098765432A';
 
-  // findCard(14);
-
-  var rank = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
-  var colorrank = ['club','diamond','heart','spade'];
-  var sequenceStr = 'A2345678910JQKA';
-  var revSequenceStr = 'AKQJ1098765432A';
-
+  /**
+  function to determine the winner
+  for every user set of cards , iterate to using different condn to find winner set of card 
+  input - array of user cards
+  output - winner arary of cards
+  */
   function compareUserCards(sampleinput){
-
+    // convert to  card objects
     var userCards = sampleinput.map((cards)=>{
       return cards.map(findCard);
     });
 
-    // p1
+    // condn user cards has same rank 
     var hasSameRankCards = userCards.map(checkSameRankCards);
     console.log('hasSameRankCards',hasSameRankCards);
     var index = hasSameRankCards.indexOf(true);
@@ -37,14 +46,14 @@
       return sampleinput[index];
     }
 
-    // p2
+    // condn user has pure sequnce
     var hasPureSequence = userCards.map(checkPureSequence);
     console.log('hasPureSequence',hasPureSequence);
     index = hasSameRankCards.indexOf(true);
     if(index>=0){
       return sampleinput[index];
     }
-    // p3
+    // condn for a sequnce
     var hasSequence = userCards.map(checkSequence);
     console.log('hasSequence',hasSequence);
     index = hasSequence.indexOf(true);
@@ -52,7 +61,7 @@
       return sampleinput[index];
     }
 
-    // p4
+    // condn for same color
     var hasSameColor = userCards.map(checkSameColor);
     console.log('hasSameColor',hasSameColor);
     index = hasSameColor.indexOf(true);
@@ -60,7 +69,7 @@
       return sampleinput[index];
     }
 
-    //
+    // condn for  pair
     var hasPair = userCards.map(checkPair);
     console.log(' hasPair',hasPair);
     index = hasPair.indexOf(true);
@@ -68,6 +77,7 @@
       return sampleinput[index];
     }
 
+    // last condn for which user has highest card
     var highestCards = userCards.map(getHighestCard);
     console.log(' highestCards',highestCards);
     var highestCard = highestCardValue(highestCards);
@@ -76,9 +86,9 @@
     highestCards.reduce((value,acc)=>{
       if(value==highestCard){acc++}
     });
-    if(acc>1){
+    if(acc>1){ // users has same highest card
       index = userCards.map(preferedCardByColor);
-    }else{
+    }else{ // only one highest card
       index = highestCards.indexOf(highestCard);
     }
     return sampleinput[index];
@@ -87,7 +97,7 @@
 
   }
 
-  //
+  // if cards have same rank
   function checkSameRankCards(cards ){
     for(var i = 0; i <= cards.length - 1; i++) {
         if(cards[i].card !== cards[0].card) {
@@ -98,7 +108,7 @@
   };
 
 
-  //
+  // check sequnce and suit ( ** color key used to store suit of card)
   function checkPureSequence(cards){
     var cardNum = '';
     // same color
@@ -159,6 +169,7 @@
     return false;
   }
 
+  // get the highest among set of card object
   function getHighestCard(cards){
     var highestCardIndex = -1;
     let cardIndex , highestCard ;
@@ -173,6 +184,7 @@
     return highestCard;
   }
 
+  // get card ranked by suit (have used color for suit)
   function preferedCardByColor(cards){
     var highestcolorIndex =-1;
     var colorIndex , highestCardIndex;
@@ -186,7 +198,7 @@
     }
     return highestCardIndex;
   }
-
+  // get highest card from arrau of cards
   function highestCardValue(highestCards){
     var highestCardIndex =-1,highestCard,cardIndex;
     for(let i = 0; i <=highestCards.length - 1; i++) {
@@ -200,7 +212,8 @@
   }
 
 
-  //###############--------------------------
+
+// sample test cases
   var sampleinput = [[12,23,45],[0,32,50]];
 
  // by sequence
